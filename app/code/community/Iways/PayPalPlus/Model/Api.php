@@ -99,7 +99,8 @@ class Iways_PayPalPlus_Model_Api
                 'log.LogLevel' => 'INFO'
             )
         );
-        $this->_apiContext->addRequestHeader('PayPal-Partner-Attribution-Id', 'Magento_Cart_PayPalPlus');
+
+        $this->_apiContext->addRequestHeader('PayPal-Partner-Attribution-Id', Mage::getSingleton('iways_paypalplus/partner_config')->getPartnerId());
         return $this;
     }
 
@@ -169,7 +170,7 @@ class Iways_PayPalPlus_Model_Api
             ->setPayer($payer)
             ->setRedirectUrls($redirectUrls)
             ->setTransactions(array($transaction));
-
+        
         try {
             $response = $payment->create($this->_apiContext);
             Mage::getSingleton('customer/session')->setPayPalPaymentId($response->getId());
@@ -302,9 +303,11 @@ class Iways_PayPalPlus_Model_Api
         $refund = new \PayPal\Api\Refund();
 
         $ppAmount = new Amount();
-        $ppAmount->setCurrency(Mage::app()->getStore()->getCurrentCurrencyCode())->setTotal($amount);
+        $ppAmount
+            ->setCurrency(Mage::app()->getStore()->getCurrentCurrencyCode())
+            ->setTotal($amount);
         $refund->setAmount($ppAmount);
-
+        
         return $sale->refund($refund, $this->_apiContext);
     }
 
@@ -610,11 +613,15 @@ class Iways_PayPalPlus_Model_Api
     {
         $details = new Details();
         $details->setShipping($quote->getShippingAddress()->getBaseShippingAmount())
-            ->setTax($quote->getShippingAddress()->getBaseTaxAmount())
+            ->setTax($quote->getShippingAddress()->getBaseTaxAmount() + $quote->getShippingAddress()->getBaseHiddenTaxAmount())
             ->setSubtotal(
-                $quote->getBaseSubtotalWithDiscount() + $quote->getShippingAddress()->getBaseHiddenTaxAmount()
+                $quote->getBaseSubtotal()
             );
 
+        $totals = $quote->getTotals();
+        if(isset($totals['discount']) && $totals['discount']->getValue()) {
+            $details->setShippingDiscount(-$totals['discount']->getValue());
+        }
         $amount = new Amount();
         $amount->setCurrency($quote->getBaseCurrencyCode())
             ->setDetails($details)

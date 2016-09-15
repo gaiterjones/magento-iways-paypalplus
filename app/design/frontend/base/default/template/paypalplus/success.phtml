@@ -59,6 +59,9 @@
             <?php endif; ?>
             </tbody>
         </table>
+        <p><?php /* @noEscape */ echo $this->__(
+                '%s has assigned the claim against you on basis of a factoring agreement to PayPal (Europe) S.à r.l. et Cie, S.C.A. You will only be released from your debt by paying to PayPal (Europe) S.à r.l. et Cie, S.C.A.', $this->getStoreName()
+            ); ?></p>
     </div>
 <?php elseif ($this->isPPP()): ?>
     <div class="ppp-success"><?php echo $this->__('<i>processed by PayPal</i>'); ?></div>

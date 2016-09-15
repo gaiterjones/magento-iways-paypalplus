@@ -28,6 +28,11 @@
 class Iways_PayPalPlus_Block_Onepage_Success extends Mage_Checkout_Block_Onepage_Review
 {
     /**
+     * Store name config path
+     */
+    const STORE_NAME_PATH = 'general/store_information/name';
+    
+    /**
      * Current order to work with.
      *
      * @var Mage_Sales_Model_Order
@@ -93,5 +98,15 @@ class Iways_PayPalPlus_Block_Onepage_Success extends Mage_Checkout_Block_Onepage
     public function getAdditionalInformation($key)
     {
         return $this->_order->getPayment()->getData($key);
+    }
+
+    /**
+     * Get store name from config
+     *
+     * @return string|null
+     */
+    public function getStoreName()
+    {
+        return Mage::getStoreConfig(self::STORE_NAME_PATH);
     }
 }

@@ -1,3 +1,12 @@
+==== 1.7.3 ====
+Added PUI legal text
+
+==== 1.7.2 ====
+Changed Handling of Partner ID
+
+==== 1.7.1 ====
+Added discount for IWD
+
 ==== 1.7.0 ====
 Update PayPal Rest SDK to 1.6.4
 Fixed parent transaction id

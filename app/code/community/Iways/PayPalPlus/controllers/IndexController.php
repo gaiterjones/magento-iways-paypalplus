@@ -113,42 +113,29 @@ class Iways_PayPalPlus_IndexController extends Mage_Checkout_Controller_Action
                 $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($response));
                 return;
             }
-            if (Mage::helper('iways_paypalplus')->isIdevOsc()) {
-                if($this->getRequest()->getParam('pppId')) {
-                    Mage::getSingleton('customer/session')->setPayPalPaymentId($this->getRequest()->getParam('pppId'));
-                }
-                /* Save Idev_Onestepcheckout POST Data to Quote */
-                $this->getLayout()->createBlock('Iways_PayPalPlus_Block_Idev_Checkout',
-                    'iways_paypalplus_handle_post_block');
-            } else {
-                if (Mage::helper('iways_paypalplus')->isFirecheckout()) {
-                    $this->getQuote()->setFirecheckoutCustomerComment($this->getRequest()->getPost('order-comment'));
-                    $quote = $this->getQuote();
-                    foreach (Mage::helper('checkoutfields')->getEnabledFields() as $fieldName => $fieldConfig) {
-                        $value = (string)$this->getRequest()->getPost($fieldName);
-                        $quote->setData($fieldName, $value);
-                    }
-                }
-
-                $billing = $this->getRequest()->getPost('billing', array());
-                $customerBillingAddressId = $this->getRequest()->getPost('billing_address_id', false);
-
-                if (isset($billing['email'])) {
-                    $billing['email'] = trim($billing['email']);
-                }
-                $this->getOnepage()->saveBilling($billing, $customerBillingAddressId);
-
-                $shipping = $this->getRequest()->getPost('shipping', array());
-                if ($billing['use_for_shipping']) {
-                    $shipping = $billing;
-                }
-                $customerShippingAddressId = $this->getRequest()->getPost('shipping_address_id', false);
-                $this->getOnepage()->saveShipping($shipping, $customerShippingAddressId);
-
-                $this->getOnepage()->saveShippingMethod($this->getRequest()->getPost('shipping_method', ''));
-
-                $this->getOnepage()->savePayment($this->getRequest()->getPost('payment', array()));
+            if ($this->getRequest()->getParam('pppId')) {
+                Mage::getSingleton('customer/session')->setPayPalPaymentId($this->getRequest()->getParam('pppId'));
             }
+            $billing = $this->getRequest()->getPost('billing', array());
+            $customerBillingAddressId = $this->getRequest()->getPost('billing_address_id', false);
+
+
+            if (isset($billing['email'])) {
+                $billing['email'] = trim($billing['email']);
+            }
+            $this->getOnepage()->saveBilling($billing, $customerBillingAddressId);
+
+            $shipping = $this->getRequest()->getPost('shipping', array());
+            if ($billing['use_for_shipping']) {
+                $shipping = $billing;
+            }
+            $customerShippingAddressId = $this->getRequest()->getPost('shipping_address_id', false);
+            $this->getOnepage()->saveShipping($shipping, $customerShippingAddressId);
+
+            $this->getOnepage()->saveShippingMethod($this->getRequest()->getPost('shipping_method', ''));
+
+            $this->getOnepage()->savePayment($this->getRequest()->getPost('payment', array()));
+
             $responsePayPal = Mage::getModel('iways_paypalplus/api')->patchPayment($this->getOnepage()->getQuote());
             if ($responsePayPal) {
                 $response = array('status' => 'success');
@@ -161,6 +148,7 @@ class Iways_PayPalPlus_IndexController extends Mage_Checkout_Controller_Action
         } catch (Exception $ex) {
             $response = array('status' => 'error', 'message' => $ex->getMessage());
         }
+
         $this->getResponse()->setHeader('Content-type', 'application/json');
         $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($response));
     }
@@ -177,7 +165,7 @@ class Iways_PayPalPlus_IndexController extends Mage_Checkout_Controller_Action
             /** @var \PayPal\Api\WebhookEvent $webhookEvent */
             $webhookEvent =
                 Mage::getSingleton('iways_paypalplus/api')->validateWebhook($this->getRequest()->getRawBody());
-            if(!$webhookEvent) {
+            if (!$webhookEvent) {
                 Mage::throwException('Event not found.');
             }
             Mage::getModel('iways_paypalplus/webhook_event')->processWebhookRequest($webhookEvent);
