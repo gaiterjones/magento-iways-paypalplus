@@ -41,4 +41,6 @@
 "Transfer order's ID as PayPal invoice number","Bestellnummer als PayPal Rechnungsnummer übertragen"
 "PayPal Plus","PayPal, Lastschrift, Kreditkarte, Kauf auf Rechnung"
 "Show loading indicator","Loading Indicator anzeigen"
+"Webhook creation failed. Error: %s","Erstellen des Webhooks gescheitert. Fehler: %s"
+"Webhook creation failed.","Erstellen des Webhooks gescheitert."
 "%s has assigned the claim against you on basis of a factoring agreement to PayPal (Europe) S.à r.l. et Cie, S.C.A. You will only be released from your debt by paying to PayPal (Europe) S.à r.l. et Cie, S.C.A.","%s hat die Forderung gegen Sie im Rahmen eines laufenden Factoringvertrages an die PayPal (Europe) S.àr.l. et Cie, S.C.A. abgetreten. Zahlungen mit schuldbefreiender Wirkung können nur an die PayPal (Europe) S.àr.l. et Cie, S.C.A. geleistet werden."

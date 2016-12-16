@@ -29,6 +29,11 @@ class Iways_PayPalPlus_Model_Observer
 {
 
     /**
+     * Webhook url already exists error code
+     */
+    const WEBHOOK_URL_ALREADY_EXISTS = 'WEBHOOK_URL_ALREADY_EXISTS';
+
+    /**
      * Add shipping address if payment is iways_paypalplus_payment
      *
      * @param Varien_Event_Observer $observer
@@ -69,15 +74,34 @@ class Iways_PayPalPlus_Model_Observer
      * Check Webhook
      *
      * @param Varien_Event_Observer $observer
+     * @return boolean Success
      */
     public function checkWebhook(Varien_Event_Observer $observer)
     {
         $api = Mage::getModel('iways_paypalplus/api')->setApiContext($this->getDefaultStoreId($observer));
-        $webhook = $api->createWebhook();
-        if ($webhook === false) {
+
+        try {
+            $api->createWebhook();
+            return true;
+        } catch (PayPal\Exception\PayPalConnectionException $ex) {
+            if ($ex->getData()) {
+                $data = Mage::helper('core')->jsonDecode($ex->getData());
+                if (isset($data['name']) && $data['name'] == self::WEBHOOK_URL_ALREADY_EXISTS) {
+                    return true;
+                }
+                Mage::getSingleton('adminhtml/session')->addError(
+                    Mage::helper('iways_paypalplus')->__('Webhook creation failed. Error: %s',
+                        isset($data['details'][0]['issue']) ? $data['details'][0]['issue'] : $ex->getMessage())
+                );
+            }
+            Mage::helper('iways_paypalplus')->handleException($ex);
+            return false;
+        } catch (Exception $e) {
+            Mage::logException($e);
             Mage::getSingleton('adminhtml/session')->addError(
                 Mage::helper('iways_paypalplus')->__('Webhook creation failed.')
             );
+            return false;
         }
     }
 

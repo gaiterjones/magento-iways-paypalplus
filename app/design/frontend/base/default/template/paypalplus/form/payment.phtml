@@ -26,6 +26,13 @@ if ($paymentExperience) :
             var payment = {};
         }
         function selectMethod(code) {
+            try {
+                if(typeof awOSCPayment != "undefined") {
+                    awOSCPayment.currentMethod = code;
+                }
+            } catch (e) {
+
+            }
             document.getElementById('p_method_' + code).click();
         }
         window.externMethodEnabled = false;
@@ -83,6 +90,9 @@ if ($paymentExperience) :
                             if($$('#checkout-review-submit > button.opc-btn-checkout').length > 0) {
                                 $$('#checkout-review-submit > button.opc-btn-checkout')[0].enable();
                             }
+                            if($$('#aw-onestepcheckout-place-order-button').length > 0) {
+                                $$('#aw-onestepcheckout-place-order-button')[0].enable();
+                            }
                         }catch (e) {
                             console.log(e);
                         }
@@ -104,6 +114,9 @@ if ($paymentExperience) :
                                 }
                                 if($$('#checkout-review-submit > button.opc-btn-checkout').length > 0) {
                                     $$('#checkout-review-submit > button.opc-btn-checkout')[0].disable();
+                                }
+                                if($$('#aw-onestepcheckout-place-order-button').length > 0) {
+                                    $$('#aw-onestepcheckout-place-order-button')[0].disable();
                                 }
                             }catch (e) {
                                 console.log(e);

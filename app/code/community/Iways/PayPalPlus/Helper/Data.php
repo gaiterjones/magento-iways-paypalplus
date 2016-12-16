@@ -175,6 +175,30 @@ class Iways_PayPalPlus_Helper_Data extends Mage_Payment_Helper_Data
     }
 
     /**
+     * Checks if Awesome is enabled and active
+     *
+     * @return bool
+     */
+    public function isAwesomeCheckout()
+    {
+        return (
+            Mage::helper('core')->isModuleEnabled('AnattaDesign_AwesomeCheckout')
+        );
+    }
+
+    /**
+     * Checks if Amasty_Scheckout is enabled and active
+     *
+     * @return bool
+     */
+    public function isAmastyScheckout()
+    {
+        return (
+            Mage::helper('core')->isModuleEnabled('Amasty_Scheckout')
+        );
+    }
+
+    /**
      * Checks if Iwd_Onestepcheckout is enabled and active
      *
      * @return bool

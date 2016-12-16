@@ -78,8 +78,21 @@ class Iways_PayPalPlus_IndexController extends Mage_Checkout_Controller_Action
                 return;
             }
         }
-        $result['success'] = true;
-        $result['error'] = false;
+        try {
+            $responsePayPal = Mage::getModel('iways_paypalplus/api')->patchPayment($this->getOnepage()->getQuote());
+            if ($responsePayPal) {
+                $result['success'] = true;
+            } else {
+                $result['success'] = false;
+                $result['error'] = false;
+                $result['error_messages'] = $this->__('Please select an other payment method.');
+
+            }
+        } catch (\Exception $e) {
+            $result['success'] = false;
+            $result['error'] = false;
+            $result['error_messages'] = $e->getMessage();
+        }
         $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
     }
 

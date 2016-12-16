@@ -101,6 +101,15 @@
                                         <show_in_website>1</show_in_website>
                                         <show_in_store>1</show_in_store>
                                     </active>
+                                    <title translate="label">
+                                        <label>Title</label>
+                                        <frontend_type>text</frontend_type>
+                                        <config_path>payment/iways_paypalplus_payment/title</config_path>
+                                        <sort_order>12</sort_order>
+                                        <show_in_default>1</show_in_default>
+                                        <show_in_website>1</show_in_website>
+                                        <show_in_store>1</show_in_store>
+                                    </title>
                                     <show_loading_indicator translate="label">
                                         <label>Show loading indicator</label>
                                         <frontend_type>select</frontend_type>

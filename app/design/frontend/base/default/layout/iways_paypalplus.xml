@@ -47,10 +47,8 @@
         </reference>
     </checkout_onepage_paymentmethod>
     <checkout_onepage_review>
-        <reference name="checkout.onepage.review.button">
-            <action method="setTemplate" ifconfig="payment/iways_paypalplus_payment/active">
-                <template>paypalplus/review/button.phtml</template>
-            </action>
+        <reference name="root">
+            <block type="iways_paypalplus/onepage_review_button" name="checkout.onepage.review.button" as="button" template="paypalplus/review/button.phtml"/>
         </reference>
     </checkout_onepage_review>
 </layout>

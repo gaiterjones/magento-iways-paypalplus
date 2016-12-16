@@ -45,6 +45,7 @@ class Iways_PayPalPlus_Model_Payment extends Mage_Payment_Model_Method_Abstract
     protected $_canOrder = false;
     protected $_canAuthorize = true;
     protected $_canCapture = true;
+    protected $_canUseInternal = false;
     protected $_canCapturePartial = false;
     protected $_canCaptureOnce = false;
     protected $_canRefund = true;

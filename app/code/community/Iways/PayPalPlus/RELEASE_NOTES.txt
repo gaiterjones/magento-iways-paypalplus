@@ -1,3 +1,17 @@
+==== 1.8.0 ====
+Added payment method title changeable.
+Added better Webhook backend exception.
+Added support for Amasty Checkout
+Added support for Awesome Checkout
+Added support for Aheadworks Checkout
+Added support for IDev_OPC 4.5 Checkout
+Fixed TM_Firecheckout missing shipping costs on shipping method reset button.
+Fixed TM_Firecheckout Ordercomment.
+Removed Address from createPayment
+
+==== 1.7.4 ====
+Patch Payment before redirect for standard Magento-Checkout (Possible Patch of missing shipping costs)
+
 ==== 1.7.3 ====
 Added PUI legal text
 

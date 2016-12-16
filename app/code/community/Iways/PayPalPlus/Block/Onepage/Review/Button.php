@@ -25,7 +25,6 @@
  * @package    Iways_PayPalPlus
  * @author robert
  */
-class Iways_PayPalPlus_Block_Onepage_Review extends Mage_Checkout_Block_Onepage_Review
+class Iways_PayPalPlus_Block_Onepage_Review_Button extends Mage_Core_Block_Template
 {
-
 }
