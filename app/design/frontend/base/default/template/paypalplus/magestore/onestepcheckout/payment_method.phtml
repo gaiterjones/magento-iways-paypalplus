@@ -80,7 +80,7 @@ $hideStyle = ' style="display:none;"';
             $$('.ppp').each(function(element){element.removeClassName('ppp-selected')});
             $$('.ppp.'+element.value).each(function(element){element.addClassName('ppp-selected')});
         }catch(e) {
-            console.log(e);
+
         }
         if (element.checked && typeof window.thirdPartyMethodObject[element.value] == 'undefined' && element.value != 'iways_paypalplus_payment' ) {
             window.ppp.deselectPaymentMethod();
